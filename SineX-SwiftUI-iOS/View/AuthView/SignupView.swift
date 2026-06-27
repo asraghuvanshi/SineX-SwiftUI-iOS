@@ -10,7 +10,6 @@ import SwiftUI
 struct SignupView: View {
     
     @Environment(AppRouter.self) private var router
-    @Environment(\.dismiss) private var dismiss
     
     @State private var fullName = ""
     @State private var email = ""
@@ -169,6 +168,7 @@ struct SignupView: View {
         print(dateOfBirth)
         print(gender)
         print(interestedIn)
+        router.push(.journeyProfession)
     }
 }
 

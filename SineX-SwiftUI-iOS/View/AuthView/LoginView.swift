@@ -77,7 +77,7 @@ struct LoginView: View {
                             Spacer()
                             
                             Button("Forgot Password?") {
-                                router.pushAuth(.forgotPassword)
+                                router.push(.forgotPassword)
                             }
                             .font(.callout.bold())
                             .foregroundStyle(Color.textSecondary)
@@ -115,7 +115,7 @@ struct LoginView: View {
                             .foregroundStyle(Color.textSecondary)
                         
                         Button("Sign Up") {
-                            router.pushAuth(.signup)
+                            router.push(.signup)
                         }
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.brandPrimary)

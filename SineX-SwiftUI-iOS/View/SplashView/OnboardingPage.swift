@@ -135,7 +135,7 @@ struct OnboardingView: View {
 
     private func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: "sonder_has_seen_onboarding")
-        router.resetTo(.auth)
+        router.resetToAuth()
     }
 }
 //

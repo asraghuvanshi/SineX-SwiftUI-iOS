@@ -14,7 +14,7 @@ final class SessionService {
 
     static let shared = SessionService()
 
-    private let service = "com.sonder.app"
+    private let service = "com.softwaredev.meet.app"
     private let account = "authToken"
 
     private init() {}

@@ -13,59 +13,83 @@ struct RootContainerView: View {
     @Environment(AppRouter.self) private var router
 
     var body: some View {
+        @Bindable var router = router
+
         Group {
             switch router.rootFlow {
             case .splash:
                 SplashView()
 
-            case .onboarding:
-                OnboardingView()
-
             case .auth:
-                authStack
+                NavigationStack(path: $router.path) {
+                    LoginView()
+                        .navigationDestination(for: AppRoute.self) { route in
+                            destination(for: route)
+                        }
+                }
 
-            case .home:
-                homeStack
+//            case .main:
+//                NavigationStack(path: $router.path) {
+//                    MainTabView()
+//                        .navigationDestination(for: AppRoute.self) { route in
+//                            destination(for: route)
+//                        }
+//                }
+//            }
+            case .main:
+                EmptyView()
+            }
+//        .sheet(item: $router.presentedSheet) { route in
+//            switch route {
+//            case .termsAndPrivacy:
+//                TermsAndPrivacyView()
+//            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: router.rootFlow)
+    }
+
+    @ViewBuilder
+        private func destination(for route: AppRoute) -> some View {
+            switch route {
+                
+                // MARK: Auth
+            case .login:
+                LoginView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .signup:
+                SignupView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .forgotPassword:
+                ForgotPasswordView()
+                    .navigationBarBackButtonHidden(true)
+                
+             
+            case .journeyProfession:
+                JourneyProfessionView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .journeyEducation:
+                JourneyEducationView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .journeyBioSkills:
+                JourneyBioSkillsView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .journeyPhotoCapture:
+                JourneyPhotoCaptureView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .journeyLivenessVerification:
+                JourneyLivenessView()
+                    .navigationBarBackButtonHidden(true)
+                
+            case .journeyComplete:
+                JourneyCompleteView()
+                    .navigationBarBackButtonHidden(true)
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: router.rootFlow)
-    }
-
-    @ViewBuilder
-    private var authStack: some View {
-        @Bindable var router = router
-        NavigationStack(path: $router.authPath) {
-            LoginView()
-                .navigationDestination(for: AuthRoute.self) { route in
-                    switch route {
-                    case .login:
-                        LoginView()
-                    case .signup:
-                        SignupView()
-                    case .forgotPassword:
-                        ForgotPasswordView()
-                    case .resetPasswordSent(let email):
-                        ResetPasswordSentView(email: email)
-                    }
-                }
-        }
-    }
-
-    @ViewBuilder
-    private var homeStack: some View {
-        @Bindable var router = router
-        NavigationStack(path: $router.homePath) {
-            HomeView()
-                .navigationDestination(for: HomeRoute.self) { route in
-                    switch route {
-                    case .profileDetail(let userID):
-                        Text("Profile detail for \(userID)")
-                    case .chatThread(let matchID):
-                        Text("Chat thread for \(matchID)")
-                    case .settings:
-                        Text("Settings")
-                    }
-                }
-        }
-    }
+//    }
 }

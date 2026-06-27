@@ -77,7 +77,7 @@ struct ForgotPasswordView: View {
         guard !email.isEmpty else { return }
         // Hook up the real password-reset API call here, then push the
         // confirmation screen carrying the email along as route data.
-        router.pushAuth(.resetPasswordSent(email: email))
+//        router.push(.resetPasswordSent(email: email))
     }
 }
 

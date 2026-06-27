@@ -46,8 +46,6 @@ struct SplashView: View {
             logoOpacity = 1.0
         }
 
-        // Brief, deliberate pause so the brand mark is actually seen rather
-        // than flashing past — not just an arbitrary delay.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
             routeToNextFlow()
         }
@@ -57,14 +55,14 @@ struct SplashView: View {
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "sonder_has_seen_onboarding")
 
         guard hasSeenOnboarding else {
-            router.resetTo(.onboarding)
+            router.resetToSplash()
             return
         }
 
         if SessionService.shared.hasValidToken {
-            router.resetTo(.home)
+            router.resetToMain()
         } else {
-            router.resetTo(.auth)
+            router.resetToAuth()
         }
     }
 }

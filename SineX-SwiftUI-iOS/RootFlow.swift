@@ -7,23 +7,45 @@
 
 
 import Foundation
+import Observation
+import SwiftUI
 
-enum RootFlow: Equatable {
+// MARK: - Root Flow
+
+enum RootFlow {
     case splash
-    case onboarding
     case auth
-    case home
+    case main
 }
 
-enum AuthRoute: Hashable {
+// MARK: - All App Routes
+
+enum AppRoute: Hashable {
+    // Auth
     case login
     case signup
     case forgotPassword
-    case resetPasswordSent(email: String)
+//    case otpVerification(email: String)
+//    case resetPassword
+
+    // Onboarding Journey (post-signup)
+    case journeyProfession
+    case journeyEducation
+    case journeyBioSkills
+    case journeyPhotoCapture
+    case journeyLivenessVerification
+    case journeyComplete
 }
 
-enum HomeRoute: Hashable {
-    case profileDetail(userID: String)
-    case chatThread(matchID: String)
-    case settings
+// MARK: - Sheet Routes
+
+enum SheetRoute: Identifiable {
+    case termsAndPrivacy
+
+    var id: String {
+        switch self {
+        case .termsAndPrivacy: return "termsAndPrivacy"
+        }
+    }
 }
+

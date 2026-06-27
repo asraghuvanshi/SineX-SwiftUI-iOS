@@ -43,7 +43,7 @@ struct ResetPasswordSentView: View {
                     // Pop the whole auth stack back to Login rather than
                     // just popping one screen, since the user is done with
                     // both ForgotPassword and this confirmation screen.
-                    router.popToAuthRoot()
+                    router.pop()
                 }
                 .font(.callout.bold())
                 .foregroundStyle(Color.brandPrimary)

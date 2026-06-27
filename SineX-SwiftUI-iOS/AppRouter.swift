@@ -9,52 +9,62 @@
 import SwiftUI
 import Observation
 
+
+// MARK: - AppRouter
+
 @Observable
 final class AppRouter {
 
-    // MARK: - Root flow
-
+    // MARK: Root
     private(set) var rootFlow: RootFlow = .splash
 
-    func resetTo(_ flow: RootFlow) {
-        authPath = NavigationPath()
-        homePath = NavigationPath()
-        withAnimation(.easeInOut(duration: 0.25)) {
-            rootFlow = flow
+    var path = NavigationPath()
+
+    // MARK: Sheet / FullScreen
+    var presentedSheet: SheetRoute?
+
+    // MARK: Root transitions
+    func resetToAuth() {
+        path = NavigationPath()
+        withAnimation(.easeInOut(duration: 0.3)) {
+            rootFlow = .auth
         }
     }
 
-    // MARK: - Auth flow stack
-
-    var authPath = NavigationPath()
-
-    func pushAuth(_ route: AuthRoute) {
-        authPath.append(route)
+    func resetToMain() {
+        path = NavigationPath()
+        withAnimation(.easeInOut(duration: 0.3)) {
+            rootFlow = .main
+        }
     }
 
-    func popAuth() {
-        guard !authPath.isEmpty else { return }
-        authPath.removeLast()
+    func resetToSplash() {
+        path = NavigationPath()
+        withAnimation(.easeInOut(duration: 0.3)) {
+            rootFlow = .splash
+        }
     }
 
-    func popToAuthRoot() {
-        authPath.removeLast(authPath.count)
+    // MARK: Push / Pop
+    func push(_ route: AppRoute) {
+        path.append(route)
     }
 
-    // MARK: - Home flow stack
-
-    var homePath = NavigationPath()
-
-    func pushHome(_ route: HomeRoute) {
-        homePath.append(route)
+    func pop() {
+        guard !path.isEmpty else { return }
+        path.removeLast()
     }
 
-    func popHome() {
-        guard !homePath.isEmpty else { return }
-        homePath.removeLast()
+    func popToRoot() {
+        path.removeLast(path.count)
     }
 
-    func popToHomeRoot() {
-        homePath.removeLast(homePath.count)
+    // MARK: Sheet helpers
+    func presentSheet(_ route: SheetRoute) {
+        presentedSheet = route
+    }
+
+    func dismissSheet() {
+        presentedSheet = nil
     }
 }
