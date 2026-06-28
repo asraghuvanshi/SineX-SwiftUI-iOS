@@ -5,7 +5,6 @@
 //  Created by iOS Developer on 26/06/26.
 //
 
-
 import SwiftUI
 import Observation
 
@@ -15,7 +14,6 @@ import Observation
 @Observable
 final class AppRouter {
 
-    // MARK: Root
     private(set) var rootFlow: RootFlow = .splash
 
     var path = NavigationPath()

@@ -146,6 +146,7 @@ struct SignupView: View {
                             .foregroundStyle(Color.textSecondary)
                         
                         Button("Sign In") {
+                            router.pop()
                         }
                         .foregroundStyle(Color.brandPrimary)
                     }

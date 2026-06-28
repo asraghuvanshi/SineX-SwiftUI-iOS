@@ -130,9 +130,7 @@ struct LoginView: View {
     
     private func handleLogin() {
         focusedField = nil
-        // Hook up real auth here. On success:
-        // SessionService.shared.save(token: idToken)
-        // router.resetTo(.home)
+        router.resetToMain()
     }
 }
 

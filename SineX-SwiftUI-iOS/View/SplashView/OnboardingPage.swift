@@ -43,7 +43,7 @@ struct OnboardingView: View {
             Color.backgroundPrimary
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
+            VStack(spacing: 20) {
                 Spacer(minLength: 24)
 
                 TabView(selection: $currentPage) {

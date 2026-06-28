@@ -5,7 +5,6 @@
 //  Created by iOS Developer on 26/06/26.
 //
 
-
 import SwiftUI
 
 struct SplashView: View {
@@ -55,7 +54,14 @@ struct SplashView: View {
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "sonder_has_seen_onboarding")
 
         guard hasSeenOnboarding else {
-            router.resetToSplash()
+            // IMPORTANT: `.splash` has no NavigationStack wrapping it in
+            // RootContainerView, so calling router.push(...) while rootFlow
+            // is still `.splash` silently does nothing — there's nothing
+            // observing `path` yet. We need to switch rootFlow to `.auth`
+            // first (which *does* own a NavigationStack), and only then
+            // push the onboarding route onto that stack.
+            router.resetToAuth()
+            router.push(.onboarding)
             return
         }
 
@@ -66,8 +72,3 @@ struct SplashView: View {
         }
     }
 }
-//
-//#Preview {
-//    SplashView()
-//        .environment(AppRouter())
-//}

@@ -22,6 +22,7 @@ enum RootFlow {
 
 enum AppRoute: Hashable {
     // Auth
+    case onboarding
     case login
     case signup
     case forgotPassword
