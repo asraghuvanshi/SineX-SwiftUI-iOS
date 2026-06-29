@@ -5,18 +5,10 @@
 //  Created by iOS Developer on 27/06/26.
 //
 
-//
-//  DiscoverGridView.swift
-//  SineX-SwiftUI-iOS
-//
-//  Created by iOS Developer on 27/06/26.
-//
-
-
 import SwiftUI
+import Combine
 
-
-struct DiscoverProfile: Identifiable {
+struct DiscoverProfile: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let age: Int
@@ -28,41 +20,45 @@ struct DiscoverProfile: Identifiable {
 }
 
 struct DiscoverGridView: View {
-    
+
     @State private var profiles: [DiscoverProfile] = DiscoverProfile.sampleData
     @State private var showFilters = false
-    
+    @Environment(AppRouter.self) private var router
+
     private let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
     ]
-    
+
     var body: some View {
         ZStack {
             Color.backgroundPrimary.ignoresSafeArea()
-            
+
             Color.purpleGlow
                 .ignoresSafeArea()
                 .frame(height: 240)
                 .frame(maxHeight: .infinity, alignment: .top)
-            
+
             VStack(spacing: 0) {
                 header
-                
+
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(profiles) { profile in
                             DiscoverGridCard(profile: profile)
+                                .onTapGesture {
+                                    router.push(.profileDetails(profileModel: profile.toUserProfileDetail()))
+                                }
                         }
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
-                    .padding(.bottom, 110) // clears floating tab bar
+                    .padding(.bottom, 110)
                 }
             }
         }
     }
-    
+
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
@@ -73,9 +69,9 @@ struct DiscoverGridView: View {
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.5))
             }
-            
+
             Spacer()
-            
+
             Button { showFilters = true } label: {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 16, weight: .semibold))
@@ -93,9 +89,9 @@ struct DiscoverGridView: View {
 // MARK: - Discover Grid Card
 
 struct DiscoverGridCard: View {
-    
+
     let profile: DiscoverProfile
-    
+
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
@@ -110,14 +106,14 @@ struct DiscoverGridCard: View {
                 .clipShape(
                     RoundedRectangle(cornerRadius: 22, style: .circular)
                 )
-            
+
             LinearGradient(
                 colors: [.clear, .black.opacity(0.8)],
                 startPoint: .center,
                 endPoint: .bottom
             )
             .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-            
+
             // Online dot
             if profile.isOnline {
                 Circle()
@@ -127,26 +123,26 @@ struct DiscoverGridCard: View {
                     .padding(10)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
-            
+
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 4) {
                     Text("\(profile.name), \(profile.age)")
                         .font(.subheadline.weight(.bold))
                         .foregroundStyle(.white)
                         .lineLimit(1)
-                    
+
                     if profile.isVerified {
                         Image(systemName: "checkmark.seal.fill")
                             .font(.caption2)
                             .foregroundStyle(Color.brandPrimary)
                     }
                 }
-                
+
                 Text(profile.jobTitle)
                     .font(.caption2)
                     .foregroundStyle(.white.opacity(0.8))
                     .lineLimit(1)
-                
+
                 HStack(spacing: 3) {
                     Image(systemName: "location.fill")
                         .font(.system(size: 8))
@@ -161,9 +157,7 @@ struct DiscoverGridCard: View {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .strokeBorder(.white.opacity(0.08), lineWidth: 1)
         )
-        .onTapGesture {
-            // navigate to full profile detail
-        }
+        .contentShape(Rectangle())
     }
 }
 
@@ -178,4 +172,26 @@ extension DiscoverProfile {
         DiscoverProfile(name: "Priya", age: 27, jobTitle: "Data Scientist", distanceKm: 6, photoSystemImage: "profile5", isVerified: true, isOnline: true),
         DiscoverProfile(name: "Kabir", age: 30, jobTitle: "Investment Analyst", distanceKm: 4, photoSystemImage: "profile6", isVerified: false, isOnline: false),
     ]
+
+    func toUserProfileDetail() -> UserProfileDetail {
+        UserProfileDetail(
+            name: name,
+            age: age,
+            jobTitle: jobTitle,
+            company: "—",
+            university: "—",
+            bio: "",
+            distanceKm: distanceKm,
+            photoSystemImage: photoSystemImage,
+            isVerified: isVerified,
+            isOnline: isOnline,
+            isPrivate: false,
+            followersCount: 0,
+            followingCount: 0,
+            postsCount: 0,
+            posts: [],
+            isFollowedByMe: false,
+            followsMe: false
+        )
+    }
 }

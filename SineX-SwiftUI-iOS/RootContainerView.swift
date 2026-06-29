@@ -92,6 +92,9 @@ struct RootContainerView: View {
         case .journeyComplete:
             JourneyCompleteView()
                 .navigationBarBackButtonHidden(true)
+        case .profileDetails(let profileModel):
+            UserProfileDetailView(profile: profileModel)
+                .navigationBarBackButtonHidden(true)
         }
     }
 }

@@ -36,6 +36,7 @@ enum AppRoute: Hashable {
     case journeyPhotoCapture
     case journeyLivenessVerification
     case journeyComplete
+    case profileDetails(profileModel: UserProfileDetail)
 }
 
 // MARK: - Sheet Routes
